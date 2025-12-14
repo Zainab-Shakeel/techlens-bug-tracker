@@ -80,7 +80,6 @@ router.post("/login", async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
-    console.log("TOKEN BEING SENT:", token);
 
     res.json({
       message: "Login successful",
