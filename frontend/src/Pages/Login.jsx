@@ -11,8 +11,42 @@ const Login = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
+  
+    try {
+      const response = await fetch("http://localhost:5001/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        // backend error message
+        setError(data.message || "Login failed");
+        setLoading(false);
+        return;
+      }
+  
+      // ✅ SUCCESS
+      console.log("LOGIN RESPONSE:", data);
+      console.log("JWT TOKEN:", data.token);
+  
+      // (next step we will save token)
+      setLoading(false);
+  
+    } catch (err) {
+      console.error(err);
+      setError("Server not reachable");
+      setLoading(false);
+    }
   };
-
+  
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 p-5 relative overflow-hidden">
       {/* Subtle animated background pattern */}
