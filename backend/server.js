@@ -1,17 +1,21 @@
+import "./config/env.js";
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import db from "./db/connection.js";
 import usersRoutes from "./routes/users.js";
 import authRoutes from "./routes/auth.js";
-
-dotenv.config();
 
 const app = express();
 
 // middleware
 app.use(cors());
 app.use(express.json());
+
+// Request logger middleware
+app.use((req, res, next) => {
+  console.log(`📥 ${req.method} ${req.path}`, req.body);
+  next();
+});
 
 // routes
 app.use("/auth", authRoutes);
